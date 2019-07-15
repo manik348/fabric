@@ -28,13 +28,13 @@ function datprocess(jsondata){
 	var nodeData;
 
 	//console.log(getUniqueInt(2, 4));
-	var uId = getUniqueInt(2, 4);;
+	var uId = getUniqueInt(2, 4);
 	var canvasCont = $('#canvasCont');
 	canvasCont.empty();
 
 	for (var i = 0; i < uId; i++) {
-		canvasCont.append('<div id="canvasbox'+(i+1)+'" class="canvasbox"><span class="canvasLabel">'+(i+1)+'</span></div>');
 		dynamicSelect.append('<option id="customSelectOption'+(i+1)+'" value="'+(i+1)+'">Canvas '+(i+1)+'</option>');
+		canvasCont.append('<div id="canvasbox'+(i+1)+'" class="canvasbox"><span class="canvasLabel">'+(i+1)+'</span></div>');
 	}
 
 	var storejson = jsondata;
@@ -50,12 +50,13 @@ function datprocess(jsondata){
 	$("#canvasInsert").css('display','inline-block');
 }
 
-function insertIntoCanvas(storejson, canvasNumber){
+/*function insertIntoCanvas(storejson, canvasNumber){
 	var rNode = getUniqueInt(3, 4997);
 	for (var i = 0; i < storejson.length; i++) {	
 		//debugger;
 		if ( i == 0 || i == 1 || i == ( storejson.length - 2 ) ||  i == ( storejson.length - 1 ) || i == rNode  ) {
 			nodeData = storejson[i];
+			console.log(i);
 			var thumbnailUrl = '', title = '', url = '';
 
 			if ( isOdd( nodeData['id'] ) == 'odd' ) {
@@ -83,12 +84,39 @@ function insertIntoCanvas(storejson, canvasNumber){
 			// }
 
 			//var dynamicOption = '<option value="" data-id="'+nodeData['id']+'" data-albumId="'+nodeData['albumId']+'" data-title="'+nodeData['title']+'" data-url="'+nodeData['url']+'" data-thumbnailUrl="'+nodeData['thumbnailUrl']+'"></option>';
-			/*if (thumbnailUrl != '') {
-				$('#canvasbox'+canvasNumber)
+			// if (thumbnailUrl != '') {
+			// 	$('#canvasbox'+canvasNumber)
+			// }
+			// if (title != '') {
+			// 	$('#canvasbox'+canvasNumber)
+			// }
+		}
+	}
+}*/
+
+function insertIntoCanvas(storejson, canvasNumber){
+	var rNode = getUniqueInt(3, 4997);
+	for (var i = 0; i < storejson.length; i++) {
+		
+		if ( i == rNode  ) {
+			nodeData = storejson[i];
+			console.log(i);
+			var thumbnailUrl = '', title = '', url = '';
+
+			if ( isOdd( nodeData['id'] ) == 'odd' ) {
+				thumbnailUrl = '<img src="'+ nodeData["thumbnailUrl"] +'" />';
+				$('#canvasbox'+canvasNumber).html(thumbnailUrl);
 			}
-			if (title != '') {
-				$('#canvasbox'+canvasNumber)
-			}*/
+
+			if ( isOdd( nodeData['id'] ) == 'even' ) {
+				title = '<h4>'+ nodeData["title"] +'</h4>';
+				$('#canvasbox'+canvasNumber).html(title);
+			}
+
+			if( nodeData['albumId'] >= 100 ){
+				url = '<p>'+ nodeData["url"] +'</p>';
+				$('#canvasbox'+canvasNumber).html(url);
+			}
 		}
 	}
 }
