@@ -56,12 +56,24 @@ function insertIntoCanvas(storejson, canvasNumber){
 		//debugger;
 		if ( i == 0 || i == 1 || i == ( storejson.length - 2 ) ||  i == ( storejson.length - 1 ) || i == rNode  ) {
 			nodeData = storejson[i];
-			var thumbnailUrl = '', title = '';
+			var thumbnailUrl = '', title = '', url = '';
 
 			if ( isOdd( nodeData['id'] ) == 'odd' ) {
-				thumbnailUrl = '<img src="'+ nodeData["thumbnailUrl"] +'" />'
-			} else if ( isOdd( nodeData['id'] ) == 'even' ) {
-				title = '<h4>'+ nodeData["title"] +'</h4>'
+				thumbnailUrl = '<img src="'+ nodeData["thumbnailUrl"] +'" />';
+				//$('#canvasbox'+canvasNumber).append(thumbnailUrl);
+				$('#canvasbox'+canvasNumber).html(thumbnailUrl);
+			}
+
+			if ( isOdd( nodeData['id'] ) == 'even' ) {
+				title = '<h4>'+ nodeData["title"] +'</h4>';
+				//$('#canvasbox'+canvasNumber).append(title);
+				$('#canvasbox'+canvasNumber).html(title);
+			}
+
+			if( nodeData['albumId'] >= 100 ){
+				url = '<p>'+ nodeData["url"] +'</p>';
+				//$('#canvasbox'+canvasNumber).append(url);
+				$('#canvasbox'+canvasNumber).html(url);
 			}
 			//console.log('index =>'+i+'; nodeData =>'+nodeData);
 			// console.log(nodeData[id])
@@ -71,8 +83,12 @@ function insertIntoCanvas(storejson, canvasNumber){
 			// }
 
 			//var dynamicOption = '<option value="" data-id="'+nodeData['id']+'" data-albumId="'+nodeData['albumId']+'" data-title="'+nodeData['title']+'" data-url="'+nodeData['url']+'" data-thumbnailUrl="'+nodeData['thumbnailUrl']+'"></option>';
-			
-			//$('#canvasbox'+canvasNumber)
+			/*if (thumbnailUrl != '') {
+				$('#canvasbox'+canvasNumber)
+			}
+			if (title != '') {
+				$('#canvasbox'+canvasNumber)
+			}*/
 		}
 	}
 }
