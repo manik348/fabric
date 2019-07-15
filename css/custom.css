@@ -1,10 +1,21 @@
 .canvasbox{
-	/* min-height: 30px; */
+	/*  
 	height: 100px;
 	width: 100px;
-	float: left;
 	margin: 10px 0px 0px 10px;
+	*/
+	min-height: 30px;
+	margin: 10px;
+	float: left;
 	border: 1px solid #000;
+	width: calc( 50% - 20px);
+	position: relative;
 }
-
+.canvasLabel {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background-color: #000;
+	color: #fff;
+}
 .mb-15{ margin-bottom: 15px; }

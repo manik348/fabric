@@ -24,7 +24,7 @@ function canvas(){
 function datprocess(jsondata){
 	//console.log(jsondata.length);
 	var dynamicSelect = $('#customSelect');
-	dynamicSelect.empty().append('<option value="0">Canvas #</option>')
+	dynamicSelect.empty().append('<option value="">Canvas #</option>')
 	var nodeData;
 
 	//console.log(getUniqueInt(2, 4));
@@ -33,36 +33,16 @@ function datprocess(jsondata){
 	canvasCont.empty();
 
 	for (var i = 0; i < uId; i++) {
-		canvasCont.append('<div id="canvasbox'+(i+1)+'" class="canvasbox"><span class="canvasLabel">'+(i+1)+'</span></div>');
+		canvasCont.append('<div id="#canvasbox'+(i+1)+'" class="canvasbox"></div>');
 		dynamicSelect.append('<option id="customSelectOption'+(i+1)+'" value="'+(i+1)+'">Canvas '+(i+1)+'</option>');
+
 	}
 
 	var storejson = jsondata;
-	
-	$("#canvasInsert").on('click', function(){
-		var selectedCanvas = dynamicSelect.val();
-		if( selectedCanvas != 0 ){
-			insertIntoCanvas(storejson, selectedCanvas);
-		}
-	})
-
-	dynamicSelect.css('display','inline-block');
-	$("#canvasInsert").css('display','inline-block');
-}
-
-function insertIntoCanvas(storejson, canvasNumber){
-	var rNode = getUniqueInt(3, 4997);
 	for (var i = 0; i < storejson.length; i++) {	
-		//debugger;
-		if ( i == 0 || i == 1 || i == ( storejson.length - 2 ) ||  i == ( storejson.length - 1 ) || i == rNode  ) {
+		
+		if ( i == 0 || i == 1 || i == ( storejson.length - 2 ) ||  i == ( storejson.length - 1 )  ) {
 			nodeData = storejson[i];
-			var thumbnailUrl = '', title = '';
-
-			if ( isOdd( nodeData['id'] ) == 'odd' ) {
-				thumbnailUrl = '<img src="'+ nodeData["thumbnailUrl"] +'" />'
-			} else if ( isOdd( nodeData['id'] ) == 'even' ) {
-				title = '<h4>'+ nodeData["title"] +'</h4>'
-			}
 			//console.log('index =>'+i+'; nodeData =>'+nodeData);
 			// console.log(nodeData[id])
 			// for ( key in nodeData ){
@@ -70,11 +50,12 @@ function insertIntoCanvas(storejson, canvasNumber){
 
 			// }
 
-			//var dynamicOption = '<option value="" data-id="'+nodeData['id']+'" data-albumId="'+nodeData['albumId']+'" data-title="'+nodeData['title']+'" data-url="'+nodeData['url']+'" data-thumbnailUrl="'+nodeData['thumbnailUrl']+'"></option>';
-			
-			//$('#canvasbox'+canvasNumber)
+			var dynamicOption = '<option value="" data-id="'+nodeData['id']+'" data-albumId="'+nodeData['albumId']+'" data-title="'+nodeData['title']+'" data-url="'+nodeData['url']+'" data-thumbnailUrl="'+nodeData['thumbnailUrl']+'"></option>';
+			dynamicSelect.append(dynamicOption);
 		}
 	}
+	dynamicSelect.css('display','inline-block');
+	$("#canvasInsert").css('display','inline-block');
 }
 
 function getUniqueInt(min, max) {
@@ -83,21 +64,11 @@ function getUniqueInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function isOdd(num) { 
-	//return num % 2;
-	if ( (num % 2) == 0 ) {
-		return 'even';
-	} else {
-		return 'odd';
-	}
-}
-
 $(function () {
 	if ($('#canvas').length > 0) {
 		//canvas();
 		$("#canvasGenrate").on('click', function(){
 			canvas();
 		})
-		
 	}
 });

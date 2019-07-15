@@ -56,13 +56,6 @@ function insertIntoCanvas(storejson, canvasNumber){
 		//debugger;
 		if ( i == 0 || i == 1 || i == ( storejson.length - 2 ) ||  i == ( storejson.length - 1 ) || i == rNode  ) {
 			nodeData = storejson[i];
-			var thumbnailUrl = '', title = '';
-
-			if ( isOdd( nodeData['id'] ) == 'odd' ) {
-				thumbnailUrl = '<img src="'+ nodeData["thumbnailUrl"] +'" />'
-			} else if ( isOdd( nodeData['id'] ) == 'even' ) {
-				title = '<h4>'+ nodeData["title"] +'</h4>'
-			}
 			//console.log('index =>'+i+'; nodeData =>'+nodeData);
 			// console.log(nodeData[id])
 			// for ( key in nodeData ){
@@ -71,8 +64,8 @@ function insertIntoCanvas(storejson, canvasNumber){
 			// }
 
 			//var dynamicOption = '<option value="" data-id="'+nodeData['id']+'" data-albumId="'+nodeData['albumId']+'" data-title="'+nodeData['title']+'" data-url="'+nodeData['url']+'" data-thumbnailUrl="'+nodeData['thumbnailUrl']+'"></option>';
-			
-			//$('#canvasbox'+canvasNumber)
+			//dynamicSelect.append(dynamicOption);
+			$('#canvasbox'+canvasNumber)
 		}
 	}
 }
@@ -82,16 +75,9 @@ function getUniqueInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 function isOdd(num) { 
-	//return num % 2;
-	if ( (num % 2) == 0 ) {
-		return 'even';
-	} else {
-		return 'odd';
-	}
+	return num % 2;
 }
-
 $(function () {
 	if ($('#canvas').length > 0) {
 		//canvas();
