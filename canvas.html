@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
+    <script src="fabric.min.js"></script>
+
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: consolas;
+        font-size: 12px;
+      }
+
+      .canvas-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+      }
+
+      .canvas-container {
+        float: left;
+      }
+
+      #c0 {
+        width: calc(50% - 2px);
+        border-right: 2px dashed darkgray;
+      }
+
+      #c1 {
+        width: calc(50% - 2px);
+      }
+
+      .pane-text {
+        position: fixed;
+        top: 12px;
+        width: 45%;
+        text-align: center;
+        font-size: 14pt;
+      }
+      #left-pane-text {
+        left: 0;
+      }
+      #right-pane-text {
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="canvas-wrapper">
+      <canvas id="c0"></canvas> <canvas id="c1"></canvas>
+    </div>
+    <div id="left-pane-text" class="pane-text">Canvas #1</div>
+    <div id="right-pane-text" class="pane-text">Canvas #2</div>
+    <script>
+      //create two canvases
+      var canvas0El = document.getElementById("c0");
+      canvas0El.width = canvas0El.offsetWidth;
+      canvas0El.height = canvas0El.parentElement.offsetHeight;
+
+      var canvas1El = document.getElementById("c1");
+      canvas1El.width = canvas1El.offsetWidth;
+      canvas1El.height = canvas1El.parentElement.offsetHeight;
+
+      var canvas0 = new fabric.Canvas("c0");
+      canvas0.setBackgroundColor("rgba(19, 19, 19, 0.25)");
+      canvas0.renderAll();
+
+      var canvas1 = new fabric.Canvas("c1");
+      canvas1.setBackgroundColor("rgba(92, 18, 18, 0.25)");
+      canvas1.renderAll();
+
+      // add loaded image on left canvas
+      var onImageLoaded = function(oImg) {
+        oImg.originX = "center";
+        oImg.originY = "center";
+
+        oImg.left = this.x;
+        oImg.top = this.y;
+
+        canvas0.add(oImg);
+        oImg.canvas = canvas0;
+        imgArrow = oImg;
+      };
+
+      var config = { crossOrigin: "anonymous" };
+
+      var baseUrl = "http://mbnsay.com/rayys/images";
+      var url0 = baseUrl + "/arrow-right-green.png";
+      var url1 = baseUrl + "/arrow-right-icon.png";
+      var url2 = baseUrl + "/arrow-right-blue.png";
+
+      // load some images
+      fabric.Image.fromURL(url0, onImageLoaded.bind({ x: 56, y: 96 }), config);
+      fabric.Image.fromURL(url0, onImageLoaded.bind({ x: 156, y: 96 }), config);
+
+      fabric.Image.fromURL(
+        url1,
+        onImageLoaded.bind({ x: 56, y: 2 * 96 }),
+        config
+      );
+      fabric.Image.fromURL(
+        url1,
+        onImageLoaded.bind({ x: 156, y: 2 * 96 }),
+        config
+      );
+
+      fabric.Image.fromURL(
+        url2,
+        onImageLoaded.bind({ x: 56, y: 3 * 96 }),
+        config
+      );
+      fabric.Image.fromURL(
+        url2,
+        onImageLoaded.bind({ x: 156, y: 3 * 96 }),
+        config
+      );
+
+      // get ready to handle touch events
+      var isTouchDevice = false;
+      window.addEventListener("touchstart", function() {
+        isTouchDevice = true;
+      });
+
+      var migrateItem = function(fromCanvas, toCanvas, pendingImage) {
+        fromCanvas.remove(pendingImage);
+
+        var pendingTransform = fromCanvas._currentTransform;
+        fromCanvas._currentTransform = null;
+
+        var removeListener = fabric.util.removeListener;
+        var addListener = fabric.util.addListener;
+        {
+          removeListener(fabric.document, "mouseup", fromCanvas._onMouseUp);
+          removeListener(fabric.document, "touchend", fromCanvas._onMouseUp);
+
+          removeListener(fabric.document, "mousemove", fromCanvas._onMouseMove);
+          removeListener(fabric.document, "touchmove", fromCanvas._onMouseMove);
+
+          addListener(
+            fromCanvas.upperCanvasEl,
+            "mousemove",
+            fromCanvas._onMouseMove
+          );
+          addListener(
+            fromCanvas.upperCanvasEl,
+            "touchmove",
+            fromCanvas._onMouseMove,
+            {
+              passive: false
+            }
+          );
+
+          if (isTouchDevice) {
+            // Wait 500ms before rebinding mousedown to prevent double triggers
+            // from touch devices
+            var _this = fromCanvas;
+            setTimeout(function() {
+              addListener(_this.upperCanvasEl, "mousedown", _this._onMouseDown);
+            }, 500);
+          }
+        }
+        {
+          addListener(fabric.document, "touchend", toCanvas._onMouseUp, {
+            passive: false
+          });
+          addListener(fabric.document, "touchmove", toCanvas._onMouseMove, {
+            passive: false
+          });
+
+          removeListener(
+            toCanvas.upperCanvasEl,
+            "mousemove",
+            toCanvas._onMouseMove
+          );
+          removeListener(
+            toCanvas.upperCanvasEl,
+            "touchmove",
+            toCanvas._onMouseMove
+          );
+
+          if (isTouchDevice) {
+            // Unbind mousedown to prevent double triggers from touch devices
+            removeListener(
+              toCanvas.upperCanvasEl,
+              "mousedown",
+              toCanvas._onMouseDown
+            );
+          } else {
+            addListener(fabric.document, "mouseup", toCanvas._onMouseUp);
+            addListener(fabric.document, "mousemove", toCanvas._onMouseMove);
+          }
+        }
+
+        setTimeout(function() {
+          pendingImage.scaleX *= -1;
+          pendingImage.canvas = toCanvas;
+          pendingImage.migrated = true;
+          toCanvas.add(pendingImage);
+
+          toCanvas._currentTransform = pendingTransform;
+          toCanvas._currentTransform.scaleX *= -1;
+          toCanvas._currentTransform.original.scaleX *= -1;
+          toCanvas.setActiveObject(pendingImage);
+        }, 10);
+      };
+
+      var onObjectMoving = function(p) {
+        var viewport = p.target.canvas.calcViewportBoundaries();
+
+        if (p.target.canvas === canvas0) {
+          if (p.target.left > viewport.br.x) {
+            console.log("Migrate: left -> center");
+            migrateItem(canvas0, canvas1, p.target);
+            return;
+          }
+        }
+        if (p.target.canvas === canvas1) {
+          if (p.target.left < viewport.tl.x) {
+            console.log("Migrate: center -> left");
+            migrateItem(canvas1, canvas0, p.target);
+            return;
+          }
+        }
+      };
+
+      canvas0.on("object:moving", onObjectMoving);
+      canvas1.on("object:moving", onObjectMoving);
+    </script>
+  </body>
+</html>
