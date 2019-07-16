@@ -1,21 +1,27 @@
-.canvasbox{
-	/*  
+.canvasbox {
+  /*
 	height: 100px;
 	width: 100px;
 	margin: 10px 0px 0px 10px;
 	*/
-	min-height: 30px;
-	margin: 10px;
-	float: left;
-	border: 1px solid #000;
-	width: calc( 50% - 20px);
-	position: relative;
+  min-height: 30px;
+  margin: 10px;
+  float: left;
+  border: 1px solid #000;
+  width: calc(50% - 20px);
+  position: relative;
 }
 .canvasLabel {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	background-color: #000;
-	color: #fff;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #000;
+  color: #fff;
 }
-.mb-15{ margin-bottom: 15px; }
+.mb-15 {
+  margin-bottom: 15px;
+}
+.canvas-container {
+  float: left;
+  width: calc(50% - 20px);
+}

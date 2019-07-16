@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Bootstrap 101 Template</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/custom.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,7 +23,12 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="text-center mb-15">
-            <a href="javascript:void(0)" class="btn btn-warning" id="canvasGenrate">Generate Random Canvases</a>
+            <a
+              href="javascript:void(0)"
+              class="btn btn-warning"
+              id="canvasGenrate"
+              >Generate Random Canvases</a
+            >
           </div>
           <div id="canvas">
             <div class="text-center mb-15">
@@ -32,20 +37,29 @@
                   <div class="col-lg-4 col-lg-offset-4">
                     <div class="row">
                       <div class="col-lg-6">
-                        <select name="" id="customSelect" class="form-control" style="display: none;"></select>
+                        <select
+                          name=""
+                          id="customSelect"
+                          class="form-control"
+                          style="display: none;"
+                        ></select>
                       </div>
                       <div class="col-lg-6">
-                        <a href="javascript:void(0)" class="btn btn-success" id="canvasInsert" style="display: none;">Insert to Canvas</a>
+                        <a
+                          href="javascript:void(0)"
+                          class="btn btn-success"
+                          id="canvasInsert"
+                          style="display: none;"
+                          >Insert to Canvas</a
+                        >
                       </div>
                     </div>
-                    
-                    
                   </div>
-                </div>                
+                </div>
               </div>
             </div>
-            
-            <div id="canvasCont"></div>
+
+            <div id="canvas-wrapper"></div>
             <!-- <div class="row">
               <div class="col-lg-6">
                 <div class="canvasbox"></div>
@@ -54,7 +68,6 @@
                 <div class="canvasbox"></div>
               </div>
             </div> -->
-
           </div>
         </div>
       </div>
@@ -65,6 +78,7 @@
     <script src="js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/fabric.min.js"></script>
     <script src="js/custom.js"></script>
   </body>
 </html>
